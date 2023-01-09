@@ -8,14 +8,14 @@ public class Main {
 		// TODO Auto-generated method stub
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setResizable(false);
-		window.setTitle("2D Adventure");
+		window.setResizable(true);
+		window.setTitle("Tile Editor");
 		
 		WindowPanel windowPanel = new WindowPanel();
 		window.add(windowPanel);
 		
 		// Causes the window to be sized to fit the preferred size and 
-		// layouts of its subcomponents (=GampePanel)
+		// layouts of its subcomponents
 		window.pack();
 		
 		window.setLocationRelativeTo(null);
