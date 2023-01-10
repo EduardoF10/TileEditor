@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 import tile.MapTiles;
 import tile.TileImageManager;
 
-//import tile.TileManager;
-
 public class WindowPanel extends JPanel implements Runnable {
 	
 	// DEVICE SCREEN DIMENSIONS
@@ -26,22 +24,9 @@ public class WindowPanel extends JPanel implements Runnable {
 	public int screenWidth = (int) (maxScreenRatio * maxScreenWidth);
 	public int screenHeight = (int) (maxScreenRatio * maxScreenHeight);
 	
-//	final int originalTileSize = 1; // 1 x 1 tile
-//	public int scale = 1;
-//	
-//	public int tileSize = originalTileSize * scale;		// 1 x 1 tile
-//	public int maxWindowCol = 64;
-//	public int maxMapRow = 64;
-//	public int mapScreenWidth = tileSize * maxMapCol;
-//	public int mapScreenHeight = tileSize * maxMapRow;
-//	public final int maxScreenCol = 24;
-//	public final int maxScreenRow = 18;
-//	
-//	public final int screenWidth = tileSize * maxScreenCol;	// 768 pixels	
-//	public final int screenHeight = tileSize * maxScreenRow;	// 576 pixels
-//	
+	
 	// FPS
-	int FPS = 60;
+	int FPS = 240;
 	
 	// Key handler
 	KeyHandler keyH = new KeyHandler();
@@ -61,14 +46,10 @@ public class WindowPanel extends JPanel implements Runnable {
 	// Map of tiles
 	MapTiles mapT;
 		
-	// Tile manager
-//	TileManager tileM = new TileManager(this);
-		
-		
 	public WindowPanel() {
 		mapT = new MapTiles(this, 16, 16);
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-		this.setBackground(Color.black);
+		this.setBackground(Color.white);
 		this.setDoubleBuffered(true);
 		this.addKeyListener(keyH);
 		this.addMouseListener(mouseH);
@@ -142,16 +123,7 @@ public class WindowPanel extends JPanel implements Runnable {
 			
 			Graphics2D g2 = (Graphics2D) g;
 			
-			mapT.draw(g2);
-			
-			
-			
-//			tileM.draw(g2);
-//			tileM.loadMap("/maps/fenceMap1.txt");
-//			tileM.draw(g2);
-//			tileM.draw2(g2,  2);
-//			tileM.draw2(g2, 1);
-			
+			mapT.draw(g2);		
 			
 			g2.dispose();
 		}
