@@ -47,7 +47,7 @@ public class WindowPanel extends JPanel implements Runnable {
 	MapTiles mapT;
 		
 	public WindowPanel() {
-		mapT = new MapTiles(this, 16, 16);
+		mapT = new MapTiles(this, 32, 32);
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.white);
 		this.setDoubleBuffered(true);

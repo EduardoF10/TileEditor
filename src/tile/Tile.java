@@ -20,5 +20,9 @@ public class Tile {
 	public void draw(Graphics2D g2, int x, int y, int width, int height) {
 		g2.drawImage(this.image, x, y, width, height, null);
 	}
+	
+	public void setImage(BufferedImage image) {
+		this.image = image;
+	}
 
 }

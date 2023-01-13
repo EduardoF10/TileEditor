@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import main.WindowPanel;
+import tile.TileImageManager.TileImage;
 
 public class MapTiles {
 	
@@ -14,7 +15,7 @@ public class MapTiles {
 	
 	TileImageManager tim;
 	
-	private final int minZoom = 3;
+	private final int minZoom = 1;
 	
 	private int upperBound, lowerBound, leftBound, rightBound;
 	
@@ -22,13 +23,15 @@ public class MapTiles {
 	private int pixWidth, pixHeight;
 	private int zoom;
 	private int mapStartX, mapStartY;
+	private boolean showGrid;
 	
 	public MapTiles(WindowPanel wp, int pixWidth, int pixHeight) {
 		tim = new TileImageManager();
 		this.wp = wp;
-		this.zoom = 8;
+		this.zoom = 4;
 		this.pixWidth = pixWidth;
 		this.pixHeight = pixHeight;
+		this.showGrid = true;
 		
 		mapStartX = 0;
 		mapStartY = 0;
@@ -37,6 +40,7 @@ public class MapTiles {
 		setMapXY();
 		setBlankMap();
 		
+		paintImage(tim.getTileImage("grass", "grass1.png"), 5, 12);
 	}
 	
 //	public void setBounds() {
@@ -59,6 +63,7 @@ public class MapTiles {
 //		
 //	}
 	
+	// This method sets the upper left map border's coordinates and the boundaries
 	public void setMapXY() {
 		
 		int tileSize = minZoom * zoom;
@@ -118,7 +123,7 @@ public class MapTiles {
 			map.add(tiles);
 		}
 		
-		BufferedImage empty = tim.getImage("empty", "00.png");
+		BufferedImage empty = tim.getTileImage("empty", "00.png").image();
 		
 		Tile emptyTile;
 		
@@ -135,7 +140,9 @@ public class MapTiles {
 	public void draw(Graphics2D g2) {
 		fillMapBoundaries(g2);
 		drawTiles(g2);
-		drawGrid(g2);
+		if (showGrid) {
+			drawGrid(g2);
+		}
 //		drawBackground(g2);
 	}
 	
@@ -196,6 +203,19 @@ public class MapTiles {
 			}
 			x = this.x;
 			y += pixelSize;
+		}
+	}
+	
+	public void paintImage(TileImage tileImage, int rowIndex, int colIndex) {
+		int row = rowIndex;
+		int col = colIndex;
+		for (int i = 0; i < tileImage.height() && row < pixHeight; i++) {
+			for (int j = 0; j < tileImage.width() && col < pixWidth; j++) {
+				map.get(row).get(col).setImage(tileImage.pixelImages().get(i).get(j));
+				col++;
+			}
+			col = colIndex;
+			row++;
 		}
 	}
 	

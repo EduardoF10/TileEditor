@@ -3,15 +3,52 @@ package tile;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 public class TileImageManager {
 	
-	HashMap<String, HashMap<String, BufferedImage>> tileSets;
+	
+	class TileImage {
+		
+		private BufferedImage image;
+		private int width;
+		private int height;
+		
+		private ArrayList<ArrayList<BufferedImage>> pixelImages;
+		
+		public TileImage(BufferedImage image) {
+			this.image = image;
+			this.width = image.getWidth();
+			this.height = image.getHeight();
+			
+			// Getting 2D array of images 1 x 1 pixels from the original image
+			this.pixelImages = new ArrayList<ArrayList<BufferedImage>>();
+			for (int i = 0; i < height; i++) {
+				ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
+				for (int j = 0; j < width; j++) {
+					BufferedImage croppedImage = image.getSubimage(j, i, 1, 1);
+					images.add(croppedImage);
+				}
+				this.pixelImages.add(images);
+			}
+		}
+		
+		public BufferedImage image() { return image; }
+		
+		public int width() { return width; }
+		
+		public int height() { return height; }
+		
+		public ArrayList<ArrayList<BufferedImage>> pixelImages() { return pixelImages; }
+		
+	}
+	
+	HashMap<String, HashMap<String, TileImage>> tileSets;
 	
 	public TileImageManager() {
-		tileSets = new HashMap<String, HashMap<String, BufferedImage>>();
+		tileSets = new HashMap<String, HashMap<String, TileImage>>();
 		setTileSprites();
 	}
 
@@ -34,14 +71,14 @@ public class TileImageManager {
 			// Iterating each file in the sub package
 			for (File tileFile : tileFiles) {
 				
-				// Adding image
-				addImage(tileFile);
+				// Adding tile image
+				addTileImage(tileFile);
 			}
 		}
 		
 	}
 	
-	public BufferedImage getImage(String tilePackage, String imageName) {
+	public TileImage getTileImage(String tilePackage, String imageName) {
 		return tileSets.get(tilePackage).get(imageName);
 	}
 	
@@ -49,11 +86,11 @@ public class TileImageManager {
 	public void addPackage(File tilePackage) {
 		String[] packagePath = tilePackage.getAbsolutePath().split("\\\\");
 		String packageName = packagePath[packagePath.length - 1];
-		HashMap<String, BufferedImage> packageTiles = new HashMap<String, BufferedImage>();
+		HashMap<String, TileImage> packageTiles = new HashMap<String, TileImage>();
 		tileSets.put(packageName, packageTiles);
 	}
 	
-	public void addImage(File imageFile) {
+	public void addTileImage(File imageFile) {
 		
 		String[] imagePath = imageFile.getAbsolutePath().split("\\\\");
 		String imageName = imagePath[imagePath.length - 1];
@@ -61,12 +98,13 @@ public class TileImageManager {
 		String parentName = parentPath[parentPath.length - 1];
 		
 		// Capturing tile image
-		BufferedImage tileImage = null;
+		BufferedImage image = null;
 		try {
-			tileImage = ImageIO.read(imageFile);
+			image = ImageIO.read(imageFile);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		TileImage tileImage = new TileImage(image);
 		tileSets.get(parentName).put(imageName, tileImage);
 	}
 	
